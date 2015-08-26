@@ -4,14 +4,13 @@ var app = angular.module("RedditClone", []);
 
 
 app.controller("NavBarController", function($scope) {
+
   $scope.newPostBool = false;
-
-
+  console.log($scope.newPostBool);
   $scope.newPostForm = function() {
-    // if(!$scope.newPostBool) {
-    //   $scope.newPostBool = true;
-    // } else {
-    //   $scope.newPostBool = false;
-    // }
-  }
-})
+
+    $scope.newPostBool = true;
+    console.log($scope.newPostBool);
+  };
+
+});
