@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html ng-app="RedditClone">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  </head>
+  <body>
+    <div ng-controller="NavBar">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Reddit Clone</a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
+              <li><a href="#" ng-click="showNewPostForm()">New Post</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By: {{sortPostsByWhat}}<span class="caret"></span></a>
+                <ul class="dropdown-menu" ng-model="sortPostsBy">
+                  <li><a href="#" ng-click="sortPostsBy('-votes')">Votes</a></li>
+                  <li><a href="#" ng-click="sortPostsBy('date')">Date</a></li>
+                  <li><a href="#" ng-click="sortPostsBy('title')">Title</a></li>
+                  <!-- <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">One more separated link</a></li> -->
+                </ul>
+              </li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search" ng-model="query">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <!-- <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">Link</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </li>
+            </ul> -->
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+      <div ng-show="newPostBool" class="newPostForm">
+        <form name="newPostForm" novalidate>
+          <div class="form-group">
+            <label for="newPostTitle">Title: </label>
+            <input type="text" name="newTitle" required ng-minlength=5 class="form-control" id="newPostTitle" ng-model="newPost.title" required placeholder="Title?">
+            <div class="error" ng-show="newPostForm.newTitle.$dirty && newPostForm.newTitle.$invalid">
+              <div class="error" ng-show="newPostForm.newTitle.$error.required">
+                A new post requires a title.
+              </div>
+              <div class="error" ng-show="newPostForm.newTitle.$error.minlength">
+                Your Title is not long enough.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newPostAuthor">Author: </label>
+            <input type="text" name="newAuthor" required ng-minlength=3 class="form-control" required ng-minlength=3 id="newPostAuthor" ng-model="newPost.author" placeholder="Author?">
+            <div class="error" ng-show="newPostForm.newAuthor.$dirty && newPostForm.newAuthor.$invalid">
+              <div class="error" ng-show="newPostForm.newAuthor.$error.required">
+                Sorry, you need a handle.
+              </div>
+              <div class="error" ng-show="newPostForm.newAuthor.$error.minlength">
+                At least 3 charcters.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newPostImageURL">ImageURL: </label>
+            <input type="url" class="form-control" name="newImageURL" required id="newPostImageURL" ng-model="newPost.imageURL" placeholder="Img URL?">
+            <div class="error" ng-show="newPostForm.newImageURL.$dirty && newPostForm.newImageURL.$invalid">
+              <div class="error" ng-show="newPostForm.newImageURL.$error.required">
+                A new Post must have an image URL.
+              </div>
+            </div>
+            <!-- <div class="error" ng-show="newPostForm.newImageURL.$dirty && newPostForm.newImageURL.$invalid">
+              <div class="error" ng-show="newPostForm.newImageURL.$error.required">
+                You need an image URL to make a new post.
+              </div>
+            </div> -->
+          </div>
+          <div class="form-group">
+            <label for="newPostDescription">Description: </label>
+            <input type="text" class="form-control" name="newDescription" required ng-minlength=10 id="newPostDescription" ng-model="newPost.description" placeholder="Description?">
+            <div class="error" ng-show="newPostForm.newDescription.$dirty && newPostForm.newDescription.$invalid">
+              <div class="error" ng-show="newPostForm.newDescription.$error.required">
+                You must include a description.
+              </div>
+              <div class="error" ng-show="newPostForm.newDescription.$error.minlength">
+                Your description must be at least 10 characters long.
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-default" type="submit" ng-disabled="newPostForm.$invalid" value="Submit Post!" ng-click="postIt(newPost)">SUBMIT POST!</button>
+      </div>
+
+      <div ng-repeat="post in posts | filter:query | orderBy:sortPostsByWhat" class="postsDiv">
+        <p class="postTitle">
+          {{post.title}} |  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-click="changeVotes('up', post)"></span> <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-click="changeVotes('down', post)"></span>
+          <span ng-class="{postPositive: post.votes > 0, postNegative: post.votes < 0}">
+            {{post.votes}}
+          </span>
+        </p>
+        <p class="postAuthor">
+          {{post.author}}
+        </p>
+        <p class="postDescription">
+          {{post.description}}
+        </p>
+        <img ng-src="{{post.imageURL}}" class="postImg">
+        <p class="postDate">
+          {{post.date | date:'medium'}} | <span class="postComments">
+            <span ng-show="post.comments.length === 1" ng-click="showComments(post)">{{post.comments.length}} comment</span>
+            <span ng-show="post.comments.length !== 1" ng-click="showComments(post)">{{post.comments.length}} comments</span>
+          </span> | <span class="addComment" ng-click="addNewComment(post)">Add Comment</span>
+        </p>
+        <div class="postNewComment">
+          <div class="form-group" ng-show="post.newCommentBool">
+            <form name="newCommentForm" novalidate>
+              <label for="postComments">Comments: </label>
+              <input type="text" class="form-control" name="newComment" required ng-minlength=10 id="postComments" ng-model="newComment.text" placeholder="Comments?">
+              <!-- <div class="error" ng-show="newCommentForm.newComment.$dirty && newCommentForm.newComment.$invalid">
+                <div class="error" ng-show="newCommentForm.newComment.$error.required">
+                  You must have something to say...
+                </div>
+                <div class="error" ng-show="newCommentForm.newComment.$error.minlength">
+                  Your comment must be at least 10 characters.
+                </div>
+              </div> -->
+              <label for="postCommentsAuthor">Author: </label>
+              <input type="text" class="form-control" name="newCommentAuthor" required ng-minlength=10 id="postCommentsAuthor" ng-model="newComment.author" placeholder="Author?">
+              <!-- <div class="error" ng-show="newCommentForm.newCommentAuthor.$dirty && newCommentForm.newCommentAuthor.$invalid">
+                <div class="error" ng-show="newCommentForm.newCommentAuthor.$error.required">
+                  You must include a handle.
+                </div>
+              </div> -->
+              <input class="btn btn-default" type="submit" value="Submit Comment!" ng-click="postNewComment(post, newComment)">
+            </form>
+          </div>
+        </div>
+        <div ng-show="post.showCommentsBool">
+          <div ng-repeat="comment in post.comments">
+            <p>
+              author: {{comment.commentAuthor}}
+            </p>
+            <p>
+              comment: {{comment.commentText}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="reddit.js"></script>
+  </body>
+</html>
