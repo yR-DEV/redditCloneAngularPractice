@@ -1,0 +1,75 @@
+.highlight {
+  background-color: yellow;
+}
+
+.invalid {
+  background-color: red;
+}
+
+.valid {
+  background-color: green;
+}
+
+.cameraImage {
+  height: 75px;
+  width: 90px;
+}
+
+.onSale {
+  color: orange;
+}
+
+.newPostForm {
+  width: 90%;
+  margin: auto;
+}
+
+.postsDiv {
+  background-color: #e1e1e1;
+  height: 20%;
+  width: 90%;
+  margin: auto;
+}
+
+.postTitle {
+  font-weight: bold;
+  margin-left: 200px;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.postAuthor {
+  margin-left: 85%;
+}
+
+.postImg {
+  margin-top: -83px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.postDescription {
+  margin-left: 250px;
+}
+
+.postDate {
+  margin-left: 200px;
+}
+
+.postNewComment {
+  width: 90%;
+  margin: auto;
+}
+
+.postPositive {
+  color: green;
+}
+
+.postNegative {
+  color: red;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
